@@ -2,12 +2,12 @@
   "name": "selenium",
   "version": "1.0.0",
   "dependencies": {
+    "chai-webdriver": "^1.2.0",
     "selenium-webdriver": "^4.0.0-alpha.1"
   },
   "scripts": {
-    "babel": "babel",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "mocha --require babel-core/register --no-timeouts src/bstack_test.js",
+    "build": "mocha --require babel-core/register --no-timeouts bstack-source.js",
     "start": "npm run build"
   },
   "devDependencies": {
