@@ -16,6 +16,7 @@ yarn-error.log
 .DS_Store
 .history
 .vscode
+keys.yml
 
 public/css/
 public/js/
