@@ -4,9 +4,9 @@ import chai from 'chai';
 import assert from 'assert';
 import fs from 'fs';
 import yaml from 'js-yaml';
-import argv from 'yargs';
+const argv = require('yargs');
 let browserName = '"toString": argv.browserName';
-let realMobile = '"toString": argv.realMobile';
+let osVersion = '"toString": argv.osVersion';
 
 function loadKeys() {
     let ymlFile = fs.readFileSync('keys.yml', 'utf8');
@@ -21,20 +21,19 @@ function loadConfig() {
 const { PROJECT } = loadConfig();
 
 let capabilities = {
-    'project' : PROJECT.name,
-    'device' : PROJECT.device,
-    'browserName' : browserName,
-    'browserstack.user' : BROWSERSTACK.username,
-    'browserstack.key' : BROWSERSTACK.key,
-    'browserstack.video' : true,
-    'browserstack.networkLogs' : 'true',
-    'browserstack.debug' : 'true',
-    'browserstack.console' : 'errors',
+    'project': PROJECT.name,
+    'device': PROJECT.device,
+    'browserName': PROJECT.browserName,
+    'os_version': PROJECT.osVersion,
+    'os': PROJECT.os,
+    'browserstack.user': BROWSERSTACK.username,
+    'browserstack.key': BROWSERSTACK.key,
+    'browserstack.video': true,
+    'browserstack.networkLogs': 'true',
+    'browserstack.debug': 'true',
+    'browserstack.console': 'errors',
+    'realMobile': 'true',
 };
-
-if(realMobile) {
-    capabilities.push({'realMobile', realMobile});
-}
 
 let driver = new Builder().
     usingServer('http://hub-cloud.browserstack.com/wd/hub').
@@ -67,14 +66,13 @@ describe('Connect to Login Page and log in', function() {
         await assert.equal(pageTitle, 'Guns :: Home Page');
     });
     it('Add item to Cart', async function() {
-        await driver.sleep(2000);
         await driver.findElement(By.className('mobile-search-btn')).click();
         await driver.sleep(1000);
-        await driver.findElement(By.id('search')).sendKeys('34010');
-        await driver.sleep(2000);
-        await driver.findElement(By.xpath('//a[contains(@href,\'/firearms/handguns/semi-auto/34010\')][text()=\'34010\']')).click();
+        await driver.findElement(By.id('search')).sendKeys('34510');
+        await driver.sleep(4000);
+        await driver.findElement(By.xpath('//*[contains(@href,\'/firearms/handguns/semi-auto/34510\')][text()=\'34510\']')).click();
         await driver.sleep(3000);
-        await driver.findElement(By.xpath('descendant::a[contains(@href,\'/firearms/handguns/semi-auto/34010\')][text()=\'HI-POINT\'][1]')).click();
+        await driver.findElement(By.xpath('descendant::a[contains(@href,\'/firearms/handguns/semi-auto/34510/WXFOH7XEBF\')][text()=\'HI-POINT\'][1]')).click();
         await driver.sleep(6000);
         await driver.findElement(By.xpath('//*[contains(text(),\'Remove from Cart\')]'))
             .then(async function() {
@@ -106,6 +104,17 @@ describe('Connect to Login Page and log in', function() {
         await assert.equal(pageTitle, "Guns :: Checkout");
     });
     it('Checkout process', async function() {
+        await driver.sleep(1000);
+        await driver.findElement(By.id("credit-card")).clear();
+        await driver.findElement(By.id('year')).clear();
+        await driver.findElement(By.id('csc')).clear();
+        await driver.findElement(By.id('first-name')).clear();
+        await driver.findElement(By.id('last-name')).clear();
+        await driver.findElement(By.id('street-address-1')).clear();
+        await driver.findElement(By.id('city')).clear();
+        await driver.findElement(By.id('zip-code')).clear();
+        await driver.findElement(By.id('phone')).clear();
+        await driver.sleep(2000);
         await driver.findElement(By.id("credit-card")).sendKeys('4111111111111111');
         await driver.findElement(By.xpath('//*[@id=\'month\']/option[3]')).click();
         await driver.findElement(By.id('year')).sendKeys('2022');

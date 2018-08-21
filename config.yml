@@ -1,4 +1,31 @@
 PROJECT:
   name: "GDC Next"
-  device: "iPhone 7"
-  browser: "iPhone"
+  browserName: "android"
+  device: "Samsung Galaxy S9"
+  os: null
+  osVersion: "8.0"
+
+
+# iPhone
+# iPhone 7
+# 10.3
+
+# iPhone
+# iPhone X
+# 11.0
+
+# iPhone
+# iPhone 6
+# 11.2
+
+# android
+# Samsung Galaxy S8
+# 7.0
+
+# android
+# Google Pixel 2
+# 8.0
+
+# android
+# Samsung Galaxy S9
+# 8.0
